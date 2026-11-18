@@ -1,0 +1,11 @@
+feature,gini_importance,rank,selected_for_model
+RSRP,0.43591889658535093,1,True
+Speed,0.2756424824732036,2,True
+SNR,0.15498598062605196,3,True
+delta_RSRP,0.13328097510344625,4,True
+Latitude,9.49463116316844e-05,5,False
+RSRQ,3.5846901575301234e-05,6,False
+Longitude,2.9488950255520457e-05,7,False
+CQI,1.1383048484821485e-05,8,False
+CellID,0.0,9,False
+NetworkMode,0.0,10,False

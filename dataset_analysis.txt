@@ -1,0 +1,77 @@
+5G production dataset analysis and handover labeling
+
+Source: Raca et al., MMSys 2020, 5G production dataset.
+Original files were not modified. A directory junction points at them.
+Sessions: 83
+Rows read: 188711
+Rows kept for supervised learning: 172001
+Rows removed (invalid RSRP, missing SNR, or missing position): 16710
+
+Label convention
+  Serving-cell Event A2 with a speed-based target tier.
+  Maintain when RSRP >= -100 dBm, SNR >= -5 dB and delta_RSRP > -2 dB.
+  Otherwise Speed >= 30 km/h selects a macro handover, and a lower speed
+  selects a small-cell handover. The decision is held for 2.0 s.
+  delta_RSRP(t) = RSRP(t) - RSRP(t-1) inside a session when the step is <= 2 s.
+  The Table 1 sites are stored for the later network simulation.
+  Their path loss is PL = A_ref + 10 * alpha * log10(d / 1 m), d >= 10 m.
+
+Selected decision-tree features: RSRP, delta_RSRP, SNR, Speed.
+
+Class counts
+  0 Maintain Current Link: 113226 (65.83%)
+  1 Handover to Macro BS: 18590 (10.81%)
+  2 Handover to Small Cell: 40185 (23.36%)
+
+Class counts by mobility
+  Driving (89293 rows)
+    0: 57238 (64.10%)
+    1: 18395 (20.60%)
+    2: 13660 (15.30%)
+  Static (82708 rows)
+    0: 55988 (67.69%)
+    1: 195 (0.24%)
+    2: 26525 (32.07%)
+
+Session split (70/15/15 by mobility and application)
+  test: 11 sessions, 21555 rows
+  train: 60 sessions, 130717 rows
+  val: 11 sessions, 19729 rows
+
+Gini importance on the training sessions (depth 5)
+   1. RSRP: 0.4359 selected
+   2. Speed: 0.2756 selected
+   3. SNR: 0.1550 selected
+   4. delta_RSRP: 0.1333 selected
+   5. Latitude: 0.0001
+   6. RSRQ: 0.0000
+   7. Longitude: 0.0000
+   8. CQI: 0.0000
+   9. CellID: 0.0000
+  10. NetworkMode: 0.0000
+
+Training min/max used to scale the four selected features to [0, 1]
+  RSRP: [-124, -48]
+  delta_RSRP: [-47, 45]
+  SNR: [-19, 35]
+  Speed: [0, 101]
+
+Synthetic sites
+  M1 macro lat 51.886738 lon -8.395127
+  M2 macro lat 51.899731 lon -8.483859
+  M3 macro lat 51.934066 lon -8.392949
+  M4 macro lat 51.914923 lon -8.457406
+  M5 macro lat 51.892814 lon -8.454909
+  M6 macro lat 51.918036 lon -8.412055
+  B1 bs lat 51.892308 lon -8.454079
+  B2 bs lat 51.887457 lon -8.395127
+  B3 bs lat 51.934785 lon -8.392949
+  B4 bs lat 51.895911 lon -8.503686
+  B5 bs lat 51.918098 lon -8.410893
+  B6 bs lat 51.900413 lon -8.480605
+  B7 bs lat 51.915252 lon -8.456369
+  F1 femto lat 51.899121 lon -8.483242
+  F2 femto lat 51.886091 lon -8.394616
+  F3 femto lat 51.905348 lon -8.357053
+  F4 femto lat 51.902048 lon -8.387766
+  F5 femto lat 51.900862 lon -8.482086
